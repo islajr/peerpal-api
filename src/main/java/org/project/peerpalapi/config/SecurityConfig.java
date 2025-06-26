@@ -1,6 +1,8 @@
 package org.project.peerpalapi.config;
 
 import lombok.AllArgsConstructor;
+import org.project.peerpalapi.security.CustomLogoutHandler;
+import org.project.peerpalapi.security.CustomLogoutSuccessHandler;
 import org.project.peerpalapi.security.JwtFilter;
 import org.project.peerpalapi.service.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
@@ -25,6 +27,8 @@ public class SecurityConfig {
 
     private final CustomUserDetailsService customUserDetailsService;
     private final JwtFilter jwtFilter;
+    private final CustomLogoutHandler customLogoutHandler;
+    private final CustomLogoutSuccessHandler customLogoutSuccessHandler;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -37,7 +41,11 @@ public class SecurityConfig {
                 .httpBasic(Customizer.withDefaults())
                 .formLogin(AbstractHttpConfigurer::disable)
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
-                .logout(Customizer.withDefaults())
+                .logout(logout -> logout
+                        .logoutUrl("/api/v1/peerpal/auth/logout")
+                        .addLogoutHandler(customLogoutHandler)
+                        .logoutSuccessHandler(customLogoutSuccessHandler)
+                )
                 .build();
     }
 
