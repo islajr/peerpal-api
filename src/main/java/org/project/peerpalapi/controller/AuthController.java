@@ -3,6 +3,7 @@ package org.project.peerpalapi.controller;
 import lombok.AllArgsConstructor;
 import org.project.peerpalapi.dto.auth.UserLoginDTO;
 import org.project.peerpalapi.dto.auth.UserRegisterDTO;
+import org.project.peerpalapi.dto.auth.VerificationDTO;
 import org.project.peerpalapi.service.AuthService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,5 +31,10 @@ public class AuthController {
     @PostMapping("/refresh")
     public ResponseEntity<String> refreshToken() {
         return authService.refreshToken();
+    }
+
+    @PostMapping("/verify")
+    public ResponseEntity<String> verifyAction(@RequestBody VerificationDTO verificationDTO) {
+        return authService.verify(verificationDTO.email(), verificationDTO.code());
     }
 }

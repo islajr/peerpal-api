@@ -35,6 +35,10 @@ public class User {
     @Size(min = 8, max = 75)
     private String password;
 
+    @NotNull
+    @Column(name = "is_email_verified")
+    boolean isEmailVerified;
+
     LocalDateTime createdAt;
     LocalDateTime updatedAt;
 }
