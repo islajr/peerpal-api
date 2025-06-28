@@ -118,6 +118,7 @@ public class AuthService {
 
     public ResponseEntity<EmailConfirmResponseDTO> verify(String email) {
 
+        tempCache.invalidate(email);
         String username = customUserDetailsService.loadUserByUsername(email).getUsername();
 
         int verificationCode = generateOTP();    // generate code.
@@ -133,7 +134,7 @@ public class AuthService {
         // add to temp cache
         tempCache.put(email, verificationCode);
         return ResponseEntity.status(HttpStatus.CREATED).body(new EmailConfirmResponseDTO(
-                "please confirm your e-mail before you proceed", email
+                "a verification e-mail has been re-sent to your e-mail", email
         ));
 
     }

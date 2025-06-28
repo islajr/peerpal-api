@@ -28,7 +28,8 @@ public class JwtFilter extends OncePerRequestFilter {
     private final List<String> PUBLIC_URLS = List.of(
             "/api/v1/peerpal/auth/register",
             "/api/v1/peerpal/auth/login",
-            "/api/v1/peerpal/auth/verify"
+            "/api/v1/peerpal/auth/verify",
+            "/api/v1/peerpal/auth/confirm"
     );
 
     @Override
