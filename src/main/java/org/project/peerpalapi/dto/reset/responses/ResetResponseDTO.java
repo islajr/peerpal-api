@@ -1,9 +1,9 @@
 package org.project.peerpalapi.dto.reset.responses;
 
-public record ResetResponse(
+public record ResetResponseDTO(
         String message
 ) {
-    public ResetResponse(String message) {
+    public ResetResponseDTO(String message) {
         this.message = message;
     }
 }

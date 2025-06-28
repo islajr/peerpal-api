@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import org.project.peerpalapi.dto.reset.requests.EmailResetDTO;
 import org.project.peerpalapi.dto.reset.requests.PasswordResetDTO;
 import org.project.peerpalapi.dto.reset.requests.UsernameResetDTO;
-import org.project.peerpalapi.dto.reset.responses.ResetResponse;
+import org.project.peerpalapi.dto.reset.responses.ResetResponseDTO;
 import org.project.peerpalapi.entity.EmailDetails;
 import org.project.peerpalapi.entity.User;
 import org.project.peerpalapi.entity.UserPrincipal;
@@ -43,7 +43,7 @@ public class ResetService {
             .build();
     private final PasswordEncoder passwordEncoder;
 
-    public ResponseEntity<ResetResponse> passwordReset(
+    public ResponseEntity<ResetResponseDTO> passwordReset(
             PasswordResetDTO passwordResetDTO) {
         UserPrincipal userPrincipal = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String email = userPrincipal.getEmail();
@@ -56,14 +56,14 @@ public class ResetService {
         otpCache.put(email, code);
         passwordCache.put(email, passwordResetDTO.password());
 
-        return ResponseEntity.ok(new ResetResponse("confirmation email sent. please check your mail"));
+        return ResponseEntity.ok(new ResetResponseDTO("confirmation email sent. please check your mail"));
     }
 
-    public ResponseEntity<ResetResponse> usernameReset(UsernameResetDTO usernameResetDTO) {
+    public ResponseEntity<ResetResponseDTO> usernameReset(UsernameResetDTO usernameResetDTO) {
         UserPrincipal userPrincipal = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String email = userPrincipal.getEmail();
         if (authRepository.existsByUsername(usernameResetDTO.username()))
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(new ResetResponse("username already exists."));
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(new ResetResponseDTO("username already exists."));
         User user = authRepository.findUserByEmail(email);
 
         if (user != null) {
@@ -71,11 +71,11 @@ public class ResetService {
             user.setUpdatedAt(LocalDateTime.now());
             authRepository.save(user);
 
-            return ResponseEntity.ok(new ResetResponse("successfully updated username"));
-        } return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResetResponse("unable to update username"));
+            return ResponseEntity.ok(new ResetResponseDTO("successfully updated username"));
+        } return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResetResponseDTO("unable to update username"));
     }
 
-    public ResponseEntity<ResetResponse> emailReset(EmailResetDTO emailResetDTO) {
+    public ResponseEntity<ResetResponseDTO> emailReset(EmailResetDTO emailResetDTO) {
         UserPrincipal userPrincipal = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String email = userPrincipal.getEmail();
         User user =authRepository.findUserByEmail(email);
@@ -87,10 +87,10 @@ public class ResetService {
         otpCache.put(email, code);
         emailCache.put(email, emailResetDTO.email());
 
-        return ResponseEntity.ok(new ResetResponse("confirmation email sent. please check your mail"));
+        return ResponseEntity.ok(new ResetResponseDTO("confirmation email sent. please check your mail"));
     }
 
-    public ResponseEntity<ResetResponse> verify(String action, int code) {
+    public ResponseEntity<ResetResponseDTO> verify(String action, int code) {
 
         UserPrincipal userPrincipal = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String email = userPrincipal.getEmail();
@@ -102,17 +102,17 @@ public class ResetService {
             otpCache.invalidate(email); // remove from cache
             if (otp != null) {
                 if (otp != code) {
-                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResetResponse("incorrect code."));
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResetResponseDTO("incorrect code."));
                 }
                 if (newPassword != null) {
                     User user = authRepository.findUserByEmail(email);
                     user.setPassword(passwordEncoder.encode(newPassword));
                     user.setCreatedAt(LocalDateTime.now());
                     authRepository.save(user);
-                    return ResponseEntity.status(HttpStatus.OK).body(new ResetResponse("password successfully updated!"));
+                    return ResponseEntity.status(HttpStatus.OK).body(new ResetResponseDTO("password successfully updated!"));
                 }
             } else {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResetResponse("expired code. please try again"));
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResetResponseDTO("expired code. please try again"));
             }
 
         } else if (action.equals("email")) {
@@ -121,7 +121,7 @@ public class ResetService {
 
             if (otp != null) {
                 if (otp != code) {
-                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResetResponse("incorrect code."));
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResetResponseDTO("incorrect code."));
                 }
                 if (newEmail != null) {
                     User user = authRepository.findUserByEmail(email);
@@ -130,17 +130,17 @@ public class ResetService {
                         user.setEmailVerified(true);
                         user.setUpdatedAt(LocalDateTime.now());
                         authRepository.save(user);
-                        return ResponseEntity.ok(new ResetResponse("e-mail successfully updated!"));
+                        return ResponseEntity.ok(new ResetResponseDTO("e-mail successfully updated!"));
                     }
                 }
             } else {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResetResponse("expired code. please try again"));
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResetResponseDTO("expired code. please try again"));
             }
 
 
 
         } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResetResponse("unexpected action."));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResetResponseDTO("unexpected action."));
         }
 
         return null;
