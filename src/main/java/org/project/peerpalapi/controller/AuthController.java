@@ -1,9 +1,9 @@
 package org.project.peerpalapi.controller;
 
 import lombok.AllArgsConstructor;
-import org.project.peerpalapi.dto.auth.UserLoginDTO;
-import org.project.peerpalapi.dto.auth.UserRegisterDTO;
-import org.project.peerpalapi.dto.auth.VerificationDTO;
+import org.project.peerpalapi.dto.auth.requests.UserLoginDTO;
+import org.project.peerpalapi.dto.auth.requests.UserRegisterDTO;
+import org.project.peerpalapi.dto.auth.requests.VerificationDTO;
 import org.project.peerpalapi.service.AuthService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

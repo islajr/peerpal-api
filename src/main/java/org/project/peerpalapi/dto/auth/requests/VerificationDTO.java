@@ -1,4 +1,4 @@
-package org.project.peerpalapi.dto.auth;
+package org.project.peerpalapi.dto.auth.requests;
 
 public record VerificationDTO(
     String email,

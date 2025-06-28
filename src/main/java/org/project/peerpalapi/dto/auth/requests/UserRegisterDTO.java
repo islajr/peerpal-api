@@ -1,4 +1,4 @@
-package org.project.peerpalapi.dto.auth;
+package org.project.peerpalapi.dto.auth.requests;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
