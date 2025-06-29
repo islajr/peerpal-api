@@ -5,11 +5,10 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
-import org.apache.coyote.BadRequestException;
 import org.project.peerpalapi.entity.UserPrincipal;
+import org.project.peerpalapi.exceptions.auth.AuthException;
 import org.project.peerpalapi.service.CustomUserDetailsService;
 import org.project.peerpalapi.service.JwtService;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -62,9 +61,9 @@ public class JwtFilter extends OncePerRequestFilter {
             }
         } else {
             if (token != null)
-                throw new BadCredentialsException("invalid token!");    // change to JwtException or custom later.
+                throw new AuthException(401, "invalid token!");
             else
-                throw new BadRequestException("problematic request!");    // problem with the request
+                throw new AuthException(401, "problematic request!");
         }
 
         filterChain.doFilter(request, response);
