@@ -2,6 +2,7 @@ package org.project.peerpalapi.service;
 
 import lombok.AllArgsConstructor;
 import org.project.peerpalapi.entity.EmailDetails;
+import org.project.peerpalapi.exceptions.auth.AuthException;
 import org.project.peerpalapi.service.interfaces.EmailServiceInterface;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
@@ -29,9 +30,9 @@ public class EmailService implements EmailServiceInterface {
             mailSender.send(message);
 
         } catch (MailException e) {
-            throw new RuntimeException("failed to send mail!"); // customize later?
+            throw new AuthException(500, "failed to send mail!");
         } catch (Exception e) {
-            throw new RuntimeException("something went wrong!");    // customize later
+            throw new AuthException(500, "something went wrong!");
         }
     }
 }
