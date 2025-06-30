@@ -1,6 +1,7 @@
 package org.project.peerpalapi.config;
 
 import lombok.AllArgsConstructor;
+import org.project.peerpalapi.security.CustomCorsConfiguration;
 import org.project.peerpalapi.security.CustomLogoutHandler;
 import org.project.peerpalapi.security.CustomLogoutSuccessHandler;
 import org.project.peerpalapi.security.JwtFilter;
@@ -31,6 +32,7 @@ public class SecurityConfig {
     private final CustomLogoutHandler customLogoutHandler;
     private final CustomLogoutSuccessHandler customLogoutSuccessHandler;
     private final AuthenticationEntryPoint authEntryPoint;
+    private final CustomCorsConfiguration customCorsConfiguration;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -40,6 +42,7 @@ public class SecurityConfig {
                         "/api/v1/peerpal/auth/**"
                 ).permitAll()
                         .anyRequest().authenticated())
+                .cors(c -> c.configurationSource(customCorsConfiguration))
                 .httpBasic(Customizer.withDefaults())
                 .formLogin(AbstractHttpConfigurer::disable)
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
