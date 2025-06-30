@@ -37,12 +37,12 @@ public class AuthController {
     }
 
     @PostMapping("/confirm")
-    public ResponseEntity<TokenResponseDTO> confirmAction(@RequestBody ConfirmationDTO verificationDTO) {
+    public ResponseEntity<TokenResponseDTO> confirmAction(@RequestBody VerificationDTO verificationDTO) {
         return authService.confirm(verificationDTO.email(), verificationDTO.code());
     }
 
     @PostMapping("/verify")
-    public ResponseEntity<EmailConfirmResponseDTO> verifyEmail(@RequestBody VerificationDTO verificationDTO) {
-        return authService.verify(verificationDTO.email());
+    public ResponseEntity<EmailConfirmResponseDTO> verifyEmail(@RequestBody ConfirmationDTO confirmationDTO) {
+        return authService.verify(confirmationDTO.email());
     }
 }
