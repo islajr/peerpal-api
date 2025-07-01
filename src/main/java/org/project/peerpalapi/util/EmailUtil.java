@@ -1,7 +1,5 @@
 package org.project.peerpalapi.util;
 
-import java.util.Random;
-
 public class EmailUtil {
     public static String generateBody(String username, String reason, int code) {
 
@@ -49,8 +47,8 @@ public class EmailUtil {
         };
     }
 
-    public static Integer generateOTP() {
-        Random random = new Random();
-        return (int) (random.nextFloat(6) * 1000000);
+    public static int generateOTP() {
+
+        return (int) (Math.random() * 900000) + 100000;
     }
 }
