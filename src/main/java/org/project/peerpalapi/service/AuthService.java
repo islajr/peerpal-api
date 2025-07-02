@@ -119,6 +119,11 @@ public class AuthService {
     public ResponseEntity<EmailConfirmResponseDTO> verify(String email) {
 
         tempCache.invalidate(email);
+
+        if (!authRepository.existsByEmail(email)) {
+            throw new AuthException(404, "no such user");
+        }
+
         String username = customUserDetailsService.loadUserByUsername(email).getUsername();
 
         int verificationCode = generateOTP();    // generate code.
