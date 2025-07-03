@@ -39,7 +39,13 @@ public class SecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(requests -> requests.requestMatchers(
-                        "/api/v1/peerpal/auth/**"
+                        "/api/v1/peerpal/auth/**",
+                                "/swagger-ui/**",               // Swagger UI static resources
+                                "/v3/api-docs",
+                                "/v3/api-docs/**",              // OpenAPI spec
+                                "/swagger-ui.html",             // Swagger main page
+                                "/webjars/**"
+
                 ).permitAll()
                         .anyRequest().authenticated())
                 .cors(c -> c.configurationSource(customCorsConfiguration))

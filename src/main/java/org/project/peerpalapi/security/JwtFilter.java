@@ -28,7 +28,12 @@ public class JwtFilter extends OncePerRequestFilter {
             "/api/v1/peerpal/auth/register",
             "/api/v1/peerpal/auth/login",
             "/api/v1/peerpal/auth/verify",
-            "/api/v1/peerpal/auth/confirm"
+            "/api/v1/peerpal/auth/confirm",
+            "/swagger-ui/**",               // Swagger UI static resources
+            "/v3/api-docs",
+            "/v3/api-docs/**",              // OpenAPI spec
+            "/swagger-ui.html",             // Swagger main page
+            "/webjars/**"
     );
 
     @Override
@@ -62,8 +67,8 @@ public class JwtFilter extends OncePerRequestFilter {
         } else {
             if (token != null)
                 throw new AuthException(401, "invalid token!");
-            else
-                throw new AuthException(401, "problematic request!");
+            /*else
+                throw new AuthException(401, "problematic request!");*/
         }
 
         filterChain.doFilter(request, response);
