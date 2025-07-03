@@ -17,22 +17,22 @@ public class ResetController {
 
     private final ResetService resetService;
 
-    @PutMapping("/password")
+    @PatchMapping("/password")
     public ResponseEntity<ResetResponseDTO> passwordReset(@RequestBody PasswordResetDTO passwordResetDTO) {
         return resetService.passwordReset(passwordResetDTO);
     }
 
-    @PutMapping("/username")
+    @PatchMapping("/username")
     public ResponseEntity<ResetResponseDTO> usernameReset(@RequestBody UsernameResetDTO usernameResetDTO) {
         return resetService.usernameReset(usernameResetDTO);
     }
 
-    @PutMapping("/email")
+    @PatchMapping("/email")
     public ResponseEntity<ResetResponseDTO> emailReset(@RequestBody EmailResetDTO emailResetDTO) {
         return resetService.emailReset(emailResetDTO);
     }
 
-    @PostMapping("/verify")
+    @PatchMapping("/verify")
     public ResponseEntity<ResetResponseDTO> verifyPassword(@RequestParam String action, @RequestBody ResetDTO resetDTO) {
         return resetService.verify(action, resetDTO.code());
     }
