@@ -45,9 +45,7 @@ public class AuthService {
 
     public ResponseEntity<EmailConfirmResponseDTO> registerUser(UserRegisterDTO userRegisterDTO) {
         User user = UserRegisterDTO.toUser(userRegisterDTO);
-        if (authRepository.existsByUsername(user.getUsername()))
 
-            throw new AuthException(409, "username is taken");
         if (authRepository.existsByEmail(user.getEmail()))
 
             throw new AuthException(409, "e-mail is taken");
@@ -57,7 +55,7 @@ public class AuthService {
         authRepository.save(user);
 
         int verificationCode = generateOTP();    // generate code.
-        String body = generateBody(user.getUsername(), "register", verificationCode);
+        String body = generateBody(user.getFirstName(), "register", verificationCode);
 
         EmailDetails emailDetails = new EmailDetails(
                 user.getEmail(),
@@ -124,10 +122,10 @@ public class AuthService {
             throw new AuthException(404, "no such user");
         }
 
-        String username = customUserDetailsService.loadUserByUsername(email).getUsername();
+        String firstName = ((UserPrincipal) customUserDetailsService.loadUserByUsername(email)).getFirstName();
 
         int verificationCode = generateOTP();    // generate code.
-        String body = generateBody(username, "register", verificationCode);
+        String body = generateBody(firstName, "register", verificationCode);
 
         EmailDetails emailDetails = new EmailDetails(
                 email,

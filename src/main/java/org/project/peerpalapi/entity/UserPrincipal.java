@@ -27,9 +27,14 @@ public class UserPrincipal implements UserDetails {
         return user.getEmail();
     }
 
+    public String getFirstName() {
+        return user.getFirstName();
+    }
+
+    // actually points to getting full name
     @Override
     public String getUsername() {
-        return user.getUsername();
+        return user.getFullName();
     }
 
     @Override

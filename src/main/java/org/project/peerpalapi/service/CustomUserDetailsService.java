@@ -25,21 +25,8 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String identifier) throws UsernameNotFoundException {
         User user = null;
 
-        switch (sortIdentifier(identifier)) {
-            case "email" -> user = authRepository.findUserByEmail(identifier);
-            case "username" -> user = authRepository.findUserByUsername(identifier);
-            case null -> throw new NullPointerException("blank username");  // customize exception
-            default -> throw new IllegalStateException("unexpected value: " + identifier);  // same as above.
-        }
+        user = authRepository.findUserByEmail(identifier);
 
-        // second stage of checking
-        if (user == null && Objects.equals(sortIdentifier(identifier), "email")) {
-            user = authRepository.findUserByUsername(identifier);
-        } else if (user == null && Objects.equals(sortIdentifier(identifier), "username")) {
-            user = authRepository.findUserByEmail(identifier);
-        }
-
-        // finally
         if (user == null) {
             throw new AuthException(404, "no such user.");
         }

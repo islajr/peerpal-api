@@ -21,9 +21,9 @@ public class User {
     private Long id;
 
     @NotNull
-    @Column(name = "username")
-    @Size(min = 1, max = 20)
-    String username;
+    @Column(name = "full_name")
+    @Size(min = 1)
+    String fullName;
 
     @NotNull
     @Column(name = "email")
@@ -41,4 +41,8 @@ public class User {
 
     LocalDateTime createdAt;
     LocalDateTime updatedAt;
+
+    public String getFirstName() {
+        return fullName.split(" ")[0];
+    }
 }

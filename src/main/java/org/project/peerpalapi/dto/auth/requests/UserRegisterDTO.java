@@ -9,9 +9,9 @@ import org.project.peerpalapi.entity.User;
 public record UserRegisterDTO(
 
         @NotNull
-        @NotBlank(message = "a username is required")
-        @Size(min = 1, max = 20)
-        String username,
+        @NotBlank(message = "your full name is required")
+        @Size(min = 1)
+        String fullName,
 
         @NotNull
         @NotBlank(message = "an e-mail address is required")
@@ -27,7 +27,7 @@ public record UserRegisterDTO(
 
     public static User toUser(UserRegisterDTO userRegisterDTO) {
         User user = new User();
-        user.setUsername(userRegisterDTO.username);
+        user.setFullName(userRegisterDTO.fullName);
         user.setEmail(userRegisterDTO.email);
         user.setPassword(userRegisterDTO.password);
         return user;

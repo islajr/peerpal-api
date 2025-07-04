@@ -5,7 +5,7 @@ import com.github.benmanes.caffeine.cache.Caffeine;
 import lombok.AllArgsConstructor;
 import org.project.peerpalapi.dto.reset.requests.EmailResetDTO;
 import org.project.peerpalapi.dto.reset.requests.PasswordResetDTO;
-import org.project.peerpalapi.dto.reset.requests.UsernameResetDTO;
+import org.project.peerpalapi.dto.reset.requests.FullNameResetDTO;
 import org.project.peerpalapi.dto.reset.responses.ResetResponseDTO;
 import org.project.peerpalapi.entity.EmailDetails;
 import org.project.peerpalapi.entity.User;
@@ -49,7 +49,7 @@ public class ResetService {
         String email = userPrincipal.getEmail();
         User user = authRepository.findUserByEmail(email);
         int code = EmailUtil.generateOTP();
-        String body = EmailUtil.generateBody(user.getUsername(), "passwordReset", code);
+        String body = EmailUtil.generateBody(user.getFirstName(), "passwordReset", code);
         EmailDetails emailDetails = new EmailDetails(email, body, "Password Reset Confirmation");
         emailService.sendMail(emailDetails);
 
@@ -59,15 +59,14 @@ public class ResetService {
         return ResponseEntity.ok(new ResetResponseDTO("confirmation email sent. please check your mail"));
     }
 
-    public ResponseEntity<ResetResponseDTO> usernameReset(UsernameResetDTO usernameResetDTO) {
+    public ResponseEntity<ResetResponseDTO> fullNameReset(FullNameResetDTO fullNameResetDTO) {
         UserPrincipal userPrincipal = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String email = userPrincipal.getEmail();
-        if (authRepository.existsByUsername(usernameResetDTO.username()))
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(new ResetResponseDTO("username already exists."));
+
         User user = authRepository.findUserByEmail(email);
 
         if (user != null) {
-            user.setUsername(usernameResetDTO.username());
+            user.setFullName(fullNameResetDTO.name());
             user.setUpdatedAt(LocalDateTime.now());
             authRepository.save(user);
 
@@ -80,7 +79,7 @@ public class ResetService {
         String email = userPrincipal.getEmail();
         User user =authRepository.findUserByEmail(email);
         int code = EmailUtil.generateOTP();
-        String body = EmailUtil.generateBody(user.getUsername(), "emailReset", code);
+        String body = EmailUtil.generateBody(user.getFirstName(), "emailReset", code);
         EmailDetails emailDetails = new EmailDetails(emailResetDTO.email(), body, "Email Reset Confirmation");
         emailService.sendMail(emailDetails);
 

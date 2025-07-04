@@ -9,9 +9,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.project.peerpalapi.dto.reset.requests.EmailResetDTO;
+import org.project.peerpalapi.dto.reset.requests.FullNameResetDTO;
 import org.project.peerpalapi.dto.reset.requests.PasswordResetDTO;
 import org.project.peerpalapi.dto.reset.requests.ResetDTO;
-import org.project.peerpalapi.dto.reset.requests.UsernameResetDTO;
 import org.project.peerpalapi.dto.reset.responses.ResetResponseDTO;
 import org.project.peerpalapi.service.ResetService;
 import org.springframework.http.ResponseEntity;
@@ -40,9 +40,9 @@ public class ResetController {
             @ApiResponse(responseCode = "200", description = "Successfully updated username"),
             @ApiResponse(responseCode = "409", description = "Username is taken")
     })
-    @PatchMapping("/username")
-    public ResponseEntity<ResetResponseDTO> usernameReset(@RequestBody UsernameResetDTO usernameResetDTO) {
-        return resetService.usernameReset(usernameResetDTO);
+    @PatchMapping("/name")
+    public ResponseEntity<ResetResponseDTO> fullNameReset(@RequestBody FullNameResetDTO fullNameResetDTO) {
+        return resetService.fullNameReset(fullNameResetDTO);
     }
 
     @Operation(description = "This endpoint lets users update their e-mail", summary = "Authentication and Authorization is required.")
@@ -69,7 +69,7 @@ public class ResetController {
             })
     })
     @PatchMapping("/verify")
-    public ResponseEntity<ResetResponseDTO> verifyPassword(@RequestParam String action, @RequestBody ResetDTO resetDTO) {
+    public ResponseEntity<ResetResponseDTO> verify(@RequestParam String action, @RequestBody ResetDTO resetDTO) {
         return resetService.verify(action, resetDTO.code());
     }
 }
