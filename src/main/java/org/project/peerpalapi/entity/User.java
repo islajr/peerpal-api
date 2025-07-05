@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 @Entity
 @AllArgsConstructor
@@ -38,6 +39,9 @@ public class User {
     @NotNull
     @Column(name = "is_email_verified")
     boolean isEmailVerified;
+
+    @OneToMany
+    ArrayList<Room> rooms;
 
     LocalDateTime createdAt;
     LocalDateTime updatedAt;
