@@ -13,7 +13,6 @@ import java.util.ArrayList;
 @RequiredArgsConstructor
 @Getter
 @Setter
-@ToString
 @Table(name = "users")
 public class User {
 
