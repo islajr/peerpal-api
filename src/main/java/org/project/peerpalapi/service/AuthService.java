@@ -52,10 +52,11 @@ public class AuthService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setCreatedAt(LocalDateTime.now());
         user.setEmailVerified(false);
+        user.setFirstName(user.generateFirstName());
         authRepository.save(user);
 
         int verificationCode = generateOTP();    // generate code.
-        String body = generateBody(user.getFirstName(), "register", verificationCode);
+        String body = generateBody(user.generateFirstName(), "register", verificationCode);
 
         EmailDetails emailDetails = new EmailDetails(
                 user.getEmail(),

@@ -49,7 +49,7 @@ public class ResetService {
         String email = userPrincipal.getEmail();
         User user = authRepository.findUserByEmail(email);
         int code = EmailUtil.generateOTP();
-        String body = EmailUtil.generateBody(user.getFirstName(), "passwordReset", code);
+        String body = EmailUtil.generateBody(user.generateFirstName(), "passwordReset", code);
         EmailDetails emailDetails = new EmailDetails(email, body, "Password Reset Confirmation");
         emailService.sendMail(emailDetails);
 
@@ -79,7 +79,7 @@ public class ResetService {
         String email = userPrincipal.getEmail();
         User user =authRepository.findUserByEmail(email);
         int code = EmailUtil.generateOTP();
-        String body = EmailUtil.generateBody(user.getFirstName(), "emailReset", code);
+        String body = EmailUtil.generateBody(user.generateFirstName(), "emailReset", code);
         EmailDetails emailDetails = new EmailDetails(emailResetDTO.email(), body, "Email Reset Confirmation");
         emailService.sendMail(emailDetails);
 

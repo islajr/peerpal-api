@@ -28,7 +28,7 @@ public class UserPrincipal implements UserDetails {
     }
 
     public String getFirstName() {
-        return user.getFirstName();
+        return user.generateFirstName();
     }
 
     // actually points to getting full name

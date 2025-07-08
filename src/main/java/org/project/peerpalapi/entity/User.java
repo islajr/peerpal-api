@@ -6,7 +6,6 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 
 @Entity
 @AllArgsConstructor
@@ -26,8 +25,12 @@ public class User {
     String fullName;
 
     @NotNull
+    @Column(name = "first_name")
+    String firstName;
+
+    @NotNull
     @Column(name = "email")
-    @Size(min = 5, max = 50)
+    @Size(min = 5, max = 100)
     String email;
 
     @NotNull
@@ -39,13 +42,14 @@ public class User {
     @Column(name = "is_email_verified")
     boolean isEmailVerified;
 
+    /*@Column(name = "rooms")
     @OneToMany
-    ArrayList<Room> rooms;
+    ArrayList<Room> rooms;*/
 
     LocalDateTime createdAt;
     LocalDateTime updatedAt;
 
-    public String getFirstName() {
+    public String generateFirstName() {
         return fullName.split(" ")[0];
     }
 }
