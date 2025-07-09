@@ -10,7 +10,7 @@ This documentation explains how authentication has been implemented within this 
 - Token Refresh
 - Password Reset
 - E-mail Reset
-- Username Reset
+- FullName Reset
 
 ## Endpoints
 
@@ -25,16 +25,16 @@ This takes in a JSON object consisting of the necessary elements: username, e-ma
 #### Request Example
 
 ```
-/api/v1/peerpal/auth/register
+POST /api/v1/peerpal/auth/register
 
     {
-        "username": "someUsername",
+        "fullName": "yourFullName",
         "email": "someone@email.com",
         "password": "somePassword",
     }
     
-    *username has a min size of 1, and a max size of 20
-    *email has a min size of 5, and a max size of 50
+    *username has a min size of 1
+    *email has a min size of 5, and a max size of 100
     *password has a min size of 8, and a max size of 75
 
 ```
@@ -63,7 +63,7 @@ This endpoint serves to confirm OTPs sent to e-mails for whatever purpose within
 #### Request Example
 
 ```
-/api/v1/peerpal/auth/confirm
+POST /api/v1/peerpal/auth/confirm
 
     {
         "email": "someone@email.com",
@@ -91,7 +91,7 @@ This endpoint serves to welcome already registered users to the application. It 
 #### Request Example
 
 ```
-/api/v1/peerpal/auth/login
+POST /api/v1/peerpal/auth/login
 
     {
         "identifier": "username or email",
@@ -144,7 +144,7 @@ This endpoint does **not require** authentication.
 #### Request Example
 
 ```
-/api/v1/peerpal/auth/verify
+POST /api/v1/peerpal/auth/verify
 
     {
         "email": "someone@email.com"
@@ -175,7 +175,7 @@ This endpoint refreshes the access token, invalidates the previous one, and prov
 This request has an empty body.
 
 ```
-/api/v1/peerpal/auth/refresh
+POST /api/v1/peerpal/auth/refresh
 
     {
 
@@ -197,20 +197,20 @@ Status Code: 200
 
 ## Reset Endpoints
 
-### Username Reset Endpoint
+### FullName Reset Endpoint
 
 This endpoint lets users reset their passwords. It requires authentication
 
 #### Request Example
 
 ```
-/api/v1/peerpal/reset/username
+PATCH /api/v1/peerpal/reset/name
 
     {
-        "username: "myUsername"
+        "name: "myFullName"
     }
 
-    *username must have a minimum of 1 character and a maximum of of 20 characters.
+    *username must have a minimum of 1 character.
 
 ```
 
@@ -253,7 +253,7 @@ This endpoint lets users reset their password, subject to an e-mail verification
 #### Request Example
 
 ```
-/api/v1/peerpal/reset/password
+PATCH /api/v1/peerpal/reset/password
 
     {
         "password": "newPassword"
@@ -281,7 +281,7 @@ This endpoint serves as an e-mail verification endpoint for all email-dependent 
 #### Request Example
 
 ```
-/api/v1/peerpal/reset/verify?action=<email|password>
+PATCH /api/v1/peerpal/reset/verify?action=<email|password>
 
     {
         "code": *******
@@ -331,7 +331,7 @@ This endpoint lets users reset their email, subject to an e-mail verification on
 #### Request Example
 
 ```
-/api/v1/peerpal/reset/email
+PATCH /api/v1/peerpal/reset/email
 
     {
         "email": "newEmail"
