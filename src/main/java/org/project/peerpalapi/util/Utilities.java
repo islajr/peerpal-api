@@ -24,8 +24,4 @@ public class Utilities {
         return null;
     }
 
-    public static User obtainUser() {
-        String email = ((UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getDetails()).getEmail();
-        return authRepository.findUserByEmail(email);
-    }
 }

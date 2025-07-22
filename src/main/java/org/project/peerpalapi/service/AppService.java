@@ -3,10 +3,10 @@ package org.project.peerpalapi.service;
 import lombok.RequiredArgsConstructor;
 import org.project.peerpalapi.dto.app.responses.*;
 import org.project.peerpalapi.entity.User;
+import org.project.peerpalapi.entity.UserPrincipal;
 import org.project.peerpalapi.repository.AuthRepository;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-
-import static org.project.peerpalapi.util.Utilities.obtainUser;
 
 @Service
 @RequiredArgsConstructor
@@ -16,7 +16,8 @@ public class AppService {
 
     public UserDashboard getUserDashboard() {
 
-        User user = obtainUser();
+        String email = ((UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getDetails()).getEmail();
+        User user = authRepository.findUserByEmail(email);
 
         return UserDashboard.builder()
                 // populate later
@@ -26,7 +27,8 @@ public class AppService {
 
     public UserStudyRooms getUserStudyRooms() {
 
-        User user = obtainUser();
+        String email = ((UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getDetails()).getEmail();
+        User user = authRepository.findUserByEmail(email);
 
         return UserStudyRooms.builder()
                 // populate later
@@ -35,7 +37,8 @@ public class AppService {
 
     public UserChats getUserChats() {
 
-        User user = obtainUser();
+        String email = ((UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getDetails()).getEmail();
+        User user = authRepository.findUserByEmail(email);
 
         return UserChats.builder()
                 // populate later
@@ -44,7 +47,8 @@ public class AppService {
 
     public UserCalendar getUserCalendar() {
 
-        User user = obtainUser();
+        String email = ((UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getDetails()).getEmail();
+        User user = authRepository.findUserByEmail(email);
 
         return UserCalendar.builder()
                 // populate later
@@ -53,7 +57,8 @@ public class AppService {
 
     public UserTasks getUserTasks() {
 
-        User user = obtainUser();
+        String email = ((UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getDetails()).getEmail();
+        User user = authRepository.findUserByEmail(email);
 
         return UserTasks.builder()
                 // populate later
@@ -63,7 +68,8 @@ public class AppService {
 
     public UserGoalsAndStreaks getUserGoalsAndStreaks() {
 
-        User user = obtainUser();
+        String email = ((UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getDetails()).getEmail();
+        User user = authRepository.findUserByEmail(email);
 
         return UserGoalsAndStreaks.builder()
                 // populate later
@@ -72,7 +78,8 @@ public class AppService {
 
     public UserSettings getUserSettings() {
 
-        User user = obtainUser();
+        String email = ((UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getDetails()).getEmail();
+        User user = authRepository.findUserByEmail(email);
 
         return UserSettings.builder()
                 // populate later
