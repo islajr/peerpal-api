@@ -1,6 +1,16 @@
 package org.project.peerpalapi.util;
 
+import lombok.RequiredArgsConstructor;
+import org.project.peerpalapi.entity.User;
+import org.project.peerpalapi.entity.UserPrincipal;
+import org.project.peerpalapi.repository.AuthRepository;
+import org.springframework.security.core.context.SecurityContextHolder;
+
+@RequiredArgsConstructor
 public class Utilities {
+
+    private final AuthRepository authRepository;
+
     public static String sortIdentifier(String identifier) {
         if (!identifier.isBlank()){
 
@@ -12,5 +22,10 @@ public class Utilities {
         }
 
         return null;
+    }
+
+    public static User obtainUser() {
+        String email = ((UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getDetails()).getEmail();
+        return authRepository.findUserByEmail(email);
     }
 }

@@ -1,4 +1,12 @@
 package org.project.peerpalapi.dto.app.responses;
 
-public record UserStudyRooms() {
+import lombok.Builder;
+import org.project.peerpalapi.entity.Room;
+
+import java.util.ArrayList;
+
+@Builder
+public record UserStudyRooms(
+        ArrayList<Room> userRooms
+) {
 }
