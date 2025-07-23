@@ -3,6 +3,7 @@ package org.project.peerpalapi.entity;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -31,6 +32,9 @@ public class Room {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
+
+    @Column(unique = true, name = "access_id", nullable = false)
+    private String accessId;    // provides websocket access from the frontend.
 
     @NotNull
     @Size(min = 1)
