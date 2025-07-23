@@ -1,12 +1,24 @@
 package org.project.peerpalapi.entity;
 
-import jakarta.persistence.*;
+import java.time.LocalDateTime;
+import java.util.List;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.*;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @AllArgsConstructor
@@ -23,16 +35,16 @@ public class User {
     @NotNull
     @Column(name = "full_name")
     @Size(min = 1)
-    String fullName;
+    private String fullName;
 
     @NotNull
     @Column(name = "first_name")
-    String firstName;
+    private String firstName;
 
     @NotNull
     @Column(name = "email")
     @Size(min = 5, max = 100)
-    String email;
+    private String email;
 
     @NotNull
     @Column(name = "password")
@@ -41,17 +53,22 @@ public class User {
 
     @NotNull
     @Column(name = "is_email_verified")
-    boolean isEmailVerified;
+    private boolean isEmailVerified;
 
-    @OneToMany
-    ArrayList<Room> userRooms;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "user_rooms",
+        joinColumns = @JoinColumn(name = "user_id"),
+        inverseJoinColumns = @JoinColumn(name = "room_id")
+    )
+    private List<Room> userRooms;
 
-    @OneToMany
+    /* @OneToMany
     @JoinColumn(name = "tasks")
-    ArrayList<Task> userTasks;
+    private List<Task> userTasks; */
 
-    LocalDateTime createdAt;
-    LocalDateTime updatedAt;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     public String generateFirstName() {
         return fullName.split(" ")[0];

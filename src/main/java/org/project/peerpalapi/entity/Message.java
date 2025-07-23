@@ -1,11 +1,22 @@
 package org.project.peerpalapi.entity;
 
-import jakarta.persistence.*;
+import java.time.LocalDateTime;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.*;
-
-import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Getter
@@ -22,21 +33,30 @@ public class Message {
     @NotNull
     @Column(name = "content")
     @Size(min = 1)
-    String content;
+    private String content;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "sender", nullable = false)
-    User sender;
+    private User sender;
 
-    @OneToOne
-    User recipient;
+    @ManyToOne
+    @JoinColumn(name = "recipient")
+    private User recipient;
 
     @Column(name = "is_reply", nullable = false)
-    boolean isReply;
+    private boolean isReply;
 
     @OneToOne
     @JoinColumn(name = "ancestor")
-    Message ancestor;   // initial 'reply' logic
+    private Message ancestor;   // initial 'reply' logic
 
-    LocalDateTime timestamp;
+    @ManyToOne
+    @JoinColumn(name = "room_id")
+    private Room room;
+
+    @ManyToOne
+    @JoinColumn(name = "chat_id")
+    private Chat chat;
+
+    private LocalDateTime timestamp;
 }

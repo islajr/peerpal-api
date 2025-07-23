@@ -1,16 +1,24 @@
 package org.project.peerpalapi.entity;
 
-import jakarta.persistence.*;
+import java.time.LocalDateTime;
+import java.util.List;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter
@@ -26,16 +34,21 @@ public class Room {
 
     @NotNull
     @Size(min = 1)
-    String name;
+    private String name;
 
-    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL)
-    List<User> members;
+    @ManyToMany(mappedBy = "userRooms")
+    private List<User> members;
 
-    @OneToMany
-    ArrayList<User> admins;
+    @ManyToMany
+    @JoinTable(
+        name = "room_admins",
+        joinColumns = @JoinColumn(name = "room_id"),
+        inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    private List<User> admins;
 
     @Size(min = 1)
-    String description; // short description of the group
+    private String description; // short description of the group
 
 
 //    String bio;
@@ -43,13 +56,13 @@ public class Room {
     /*@Column(name = "photo_id")
     Long photoId;   // group photo storage*/
 
-    @OneToMany
-    ArrayList<Message> messages;
+    @OneToMany(mappedBy = "room")
+    private List<Message> messages;
 
     @OneToOne
     @JoinColumn(name = "created_by", nullable = false)
-    User createdBy;
+    private User createdBy;
 
-    LocalDateTime createdAt;
-    LocalDateTime updatedAt;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 }
