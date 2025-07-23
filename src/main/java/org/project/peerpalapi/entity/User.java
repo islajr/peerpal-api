@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 @Entity
 @AllArgsConstructor
@@ -42,9 +43,12 @@ public class User {
     @Column(name = "is_email_verified")
     boolean isEmailVerified;
 
-    /*@Column(name = "rooms")
     @OneToMany
-    ArrayList<Room> rooms;*/
+    ArrayList<Room> userRooms;
+
+    @OneToMany
+    @JoinColumn(name = "tasks")
+    ArrayList<Task> userTasks;
 
     LocalDateTime createdAt;
     LocalDateTime updatedAt;

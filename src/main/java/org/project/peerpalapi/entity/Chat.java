@@ -21,11 +21,9 @@ public class Chat {
     private String id;
 
     @OneToMany
-    @JoinColumn(name = "members")
     ArrayList<User> members;
 
-    @OneToMany()
-    @JoinColumn(name = "messages")
+    @OneToMany
     ArrayList<Message> messages;
 
     LocalDateTime createdAt;

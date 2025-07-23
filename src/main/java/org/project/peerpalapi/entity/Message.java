@@ -29,7 +29,6 @@ public class Message {
     User sender;
 
     @OneToOne
-    @JoinColumn(name = "recipient", nullable = false)
     User recipient;
 
     @Column(name = "is_reply", nullable = false)

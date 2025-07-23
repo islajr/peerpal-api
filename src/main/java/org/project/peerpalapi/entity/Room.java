@@ -10,6 +10,7 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -24,30 +25,25 @@ public class Room {
     private String id;
 
     @NotNull
-    @Column(name = "name")
     @Size(min = 1)
     String name;
 
-    @OneToMany
-    @JoinColumn(name = "members")
-    ArrayList<User> members;
+    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL)
+    List<User> members;
 
     @OneToMany
-    @JoinColumn(name = "admins")
     ArrayList<User> admins;
 
-    @Column(name = "description")
     @Size(min = 1)
     String description; // short description of the group
 
 
 //    String bio;
 
-    @Column(name = "photo_id")
-    Long photoId;   // group photo storage
+    /*@Column(name = "photo_id")
+    Long photoId;   // group photo storage*/
 
     @OneToMany
-    @JoinColumn(name = "messages")
     ArrayList<Message> messages;
 
     @OneToOne
