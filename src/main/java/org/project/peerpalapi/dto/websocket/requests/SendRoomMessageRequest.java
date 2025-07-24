@@ -13,6 +13,10 @@ public record SendRoomMessageRequest(
 
         @NotNull
         @NotBlank
+        String room,    // name of the room
+
+        @NotNull
+        @NotBlank
         String message, // message content
 
         @NotNull
