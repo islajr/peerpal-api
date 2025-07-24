@@ -16,10 +16,7 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Getter
@@ -27,6 +24,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @RequiredArgsConstructor
 @Table(name = "rooms")
+@Builder
 public class Room {
 
     @Id

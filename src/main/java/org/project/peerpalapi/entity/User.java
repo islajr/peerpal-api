@@ -15,10 +15,7 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @AllArgsConstructor
@@ -26,6 +23,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Table(name = "users")
+@Builder
 public class User {
 
     @Id
