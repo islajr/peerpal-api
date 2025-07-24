@@ -2,6 +2,7 @@ package org.project.peerpalapi.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.project.peerpalapi.dto.websocket.requests.ChatMessageRequest;
+import org.project.peerpalapi.dto.websocket.requests.DeleteChatMessageRequest;
 import org.project.peerpalapi.dto.websocket.requests.NewChatRequest;
 import org.project.peerpalapi.dto.websocket.responses.ActionResponse;
 import org.project.peerpalapi.service.PersonalChatService;
@@ -33,7 +34,7 @@ public class PersonalChatController {
     // delete a personal chat message
     @MessageMapping("/chat/delete")
     @SendTo("/chat/{accessId}")
-    public ActionResponse deletePersonalChatMessage(@DestinationVariable String accessId, ChatMessageRequest chatMessageRequest) {
-        return personalChatService.deletePersonalChatMessage(accessId, chatMessageRequest);
+    public ActionResponse deletePersonalChatMessage(@DestinationVariable String accessId, DeleteChatMessageRequest deleteChatMessageRequest) {
+        return personalChatService.deletePersonalChatMessage(accessId, deleteChatMessageRequest);
     }
 }
