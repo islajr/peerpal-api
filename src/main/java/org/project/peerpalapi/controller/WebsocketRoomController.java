@@ -62,6 +62,6 @@ public class WebsocketRoomController {
     @MessageMapping("/room/exit")
     @SendTo("/room/{accessId}")
     public ActionResponse exitRoom(@DestinationVariable String accessId) {
-        return roomService.exitRoom();
+        return roomService.exitRoom(accessId);
     }
 }
