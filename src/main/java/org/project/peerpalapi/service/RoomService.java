@@ -1,8 +1,8 @@
 package org.project.peerpalapi.service;
 
 import lombok.RequiredArgsConstructor;
-import org.project.peerpalapi.dto.websocket.responses.ActionResponse;
 import org.project.peerpalapi.dto.websocket.requests.*;
+import org.project.peerpalapi.dto.websocket.responses.ActionResponse;
 import org.project.peerpalapi.entity.Message;
 import org.project.peerpalapi.entity.Room;
 import org.project.peerpalapi.entity.User;
@@ -13,6 +13,7 @@ import org.project.peerpalapi.repository.RoomRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 @Service
 @RequiredArgsConstructor
@@ -31,7 +32,7 @@ public class RoomService {
                 .members(null)  // match names to user entities in a helper function and return values in a list
                 .admins(null)   // same as above
                 .createdBy(null)    // obtain user from authentication
-                .messages(null)
+                .messages(new ArrayList<>())
                 .createdAt(LocalDateTime.now())
                 .updatedAt(null).build();
 
@@ -125,7 +126,7 @@ public class RoomService {
 
             if (message.getRoom() != null && message.getRoom().equals(room)) {    // if it's a confirmed room message
                 // check and confirm that the sender is the same as the deleter
-                // proceed to delete message
+                // proceed to delete message from both 'messages' and 'room'?
                 messageRepository.delete(message);
             }
 
@@ -156,7 +157,7 @@ public class RoomService {
                     .timestamp(LocalDateTime.now())
                     .build();
 
-            room.getMessages().add(message);
+            room.addMessage(message);
             messageRepository.save(message);
             roomRepository.save(room);
 
