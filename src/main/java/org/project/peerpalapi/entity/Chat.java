@@ -46,4 +46,8 @@ public class Chat {
 
     private LocalDateTime updatedAt;
 
+    public void addMessage(Message message) {
+        messages.add(message);
+    }
+
 }
