@@ -20,7 +20,7 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @RequiredArgsConstructor
-@Table(name = "chats")
+@Table(name = "chat")
 @Builder
 public class Chat {
 
