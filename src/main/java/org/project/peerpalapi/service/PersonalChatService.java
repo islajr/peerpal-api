@@ -8,12 +8,15 @@ import org.project.peerpalapi.dto.websocket.responses.ActionResponse;
 import org.project.peerpalapi.entity.Chat;
 import org.project.peerpalapi.entity.Message;
 import org.project.peerpalapi.entity.User;
+import org.project.peerpalapi.entity.UserPrincipal;
 import org.project.peerpalapi.exceptions.auth.AuthException;
 import org.project.peerpalapi.repository.AuthRepository;
 import org.project.peerpalapi.repository.ChatRepository;
 import org.project.peerpalapi.repository.MessageRepository;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,22 +29,22 @@ public class PersonalChatService {
     private final AuthRepository authRepository;
     private final MessageRepository messageRepository;
 
-    public ActionResponse createNewChat(String accessId, NewChatRequest newChatRequest) {
+    public ActionResponse createNewChat(String accessId, NewChatRequest newChatRequest, Principal principal) {
 
+        String email = ((UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getDetails()).getEmail();
+        User user = authRepository.findUserByEmail(email);
         User recipient = authRepository.findUserByFullName(newChatRequest.recipient());
 
         Chat chat = Chat.builder()
-                .members(null)  // add the user entities of both sender and recipient
+                .members(List.of(user, recipient))  // add the user entities of both sender and recipient
                 .accessId(accessId)
                 .messages(new ArrayList<>()) // initially empty
-                .createdAt(LocalDateTime.now())
-                .updatedAt(null)    // initially
                 .build();
 
         Message message = Message.builder()
                 .content(newChatRequest.message())
                 .recipient(recipient)
-                .sender(null)       // grab sender from auth
+                .sender(user)       // grab sender from auth
                 .chat(chat)
                 .room(null)
                 .isReply(false)
@@ -64,7 +67,7 @@ public class PersonalChatService {
 
     }
 
-    public ActionResponse sendPersonalChatMessage(String accessId, ChatMessageRequest chatMessageRequest) {
+    public ActionResponse sendPersonalChatMessage(String accessId, ChatMessageRequest chatMessageRequest, Principal principal) {
         User recipient = authRepository.findUserByFullName(chatMessageRequest.recipient());
         Chat chat = chatRepository.findChatByAccessId(accessId);
 
@@ -98,7 +101,7 @@ public class PersonalChatService {
 
     }
 
-    public ActionResponse deletePersonalChatMessage(String accessId, DeleteChatMessageRequest deleteChatMessageRequest) {
+    public ActionResponse deletePersonalChatMessage(String accessId, DeleteChatMessageRequest deleteChatMessageRequest, Principal principal) {
         Chat chat = chatRepository.findChatByAccessId(accessId);
         if (chat != null) {
             List<Message> messages = messageRepository.findMessageByContentAndTimestamp(deleteChatMessageRequest.message(), deleteChatMessageRequest.timestamp());

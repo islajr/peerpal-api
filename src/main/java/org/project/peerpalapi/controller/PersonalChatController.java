@@ -11,6 +11,8 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 
+import java.security.Principal;
+
 @Controller
 @RequiredArgsConstructor
 public class PersonalChatController {
@@ -20,21 +22,21 @@ public class PersonalChatController {
     // create a new chat
     @MessageMapping("/chat/new")
     @SendTo("/chat/{accessId}")
-    public ActionResponse createNewChat(@DestinationVariable String accessId, NewChatRequest newChatRequest) {
-        return personalChatService.createNewChat(accessId, newChatRequest);
+    public ActionResponse createNewChat(@DestinationVariable String accessId, NewChatRequest newChatRequest, Principal user) {
+        return personalChatService.createNewChat(accessId, newChatRequest, user);
     }
 
     // send a new (personal) chat message
     @MessageMapping("/chat/send")
     @SendTo("/chat/{accessId}")
-    public ActionResponse sendPersonalChatMessage(@DestinationVariable String accessId, ChatMessageRequest chatMessageRequest) {
-        return personalChatService.sendPersonalChatMessage(accessId, chatMessageRequest);
+    public ActionResponse sendPersonalChatMessage(@DestinationVariable String accessId, ChatMessageRequest chatMessageRequest, Principal user) {
+        return personalChatService.sendPersonalChatMessage(accessId, chatMessageRequest, user);
     }
 
     // delete a personal chat message
     @MessageMapping("/chat/delete")
     @SendTo("/chat/{accessId}")
-    public ActionResponse deletePersonalChatMessage(@DestinationVariable String accessId, DeleteChatMessageRequest deleteChatMessageRequest) {
-        return personalChatService.deletePersonalChatMessage(accessId, deleteChatMessageRequest);
+    public ActionResponse deletePersonalChatMessage(@DestinationVariable String accessId, DeleteChatMessageRequest deleteChatMessageRequest, Principal user) {
+        return personalChatService.deletePersonalChatMessage(accessId, deleteChatMessageRequest, user);
     }
 }
