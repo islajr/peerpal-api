@@ -14,6 +14,7 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
 @Getter
@@ -56,5 +57,6 @@ public class Message {
     @JoinColumn(name = "chat_id")
     private Chat chat;
 
+    @CreationTimestamp
     private LocalDateTime timestamp;
 }
